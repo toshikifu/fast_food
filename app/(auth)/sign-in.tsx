@@ -16,7 +16,8 @@ const SignIn = () => {
 
         setIsSubmitting(true)
         try {
-            await signIn({email, password})
+            // TODO: activate this
+            // await signIn({email, password})
 
             router.replace("/")
         } catch (error: any) {

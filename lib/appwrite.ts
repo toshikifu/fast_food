@@ -1,5 +1,6 @@
 import {Account, Avatars, Client, Databases, ID, Query} from "react-native-appwrite";
 import {CreateUserParams, SignInParams} from "@/type";
+
 export const appwriteConfig = {
     endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
     platform: "com.toshikifu.fastfood",
@@ -51,6 +52,7 @@ export const signIn = async ({email, password}: SignInParams) => {
 }
 
 export const getCurrentUser = async () => {
+    return false
     try {
         const currentAccount = await account.get()
         if(!currentAccount) throw Error
@@ -58,7 +60,7 @@ export const getCurrentUser = async () => {
         const currentUser = await databases.listDocuments(
             appwriteConfig.databaseId,
             appwriteConfig.userCollectionId,
-            [Query.equal("id", currentAccount.$id)]
+            [Query.equal("$id", currentAccount.$id)]
         )
 
         if(!currentUser) throw Error
