@@ -20,7 +20,6 @@ export const databases = new Databases(client)
 const avatars = new Avatars(client)
 
 export const createUser = async ({email, password, name}: CreateUserParams) => {
-    return {}
     try {
         const newAccount = await account.create({userId: ID.unique(), email, password, name})
         if (!newAccount) throw Error
@@ -44,7 +43,6 @@ export const createUser = async ({email, password, name}: CreateUserParams) => {
 }
 
 export const signIn = async ({email, password}: SignInParams) => {
-    return {}
     try {
         const session = await account.createEmailPasswordSession({email, password})
     } catch (e) {
@@ -53,7 +51,6 @@ export const signIn = async ({email, password}: SignInParams) => {
 }
 
 export const getCurrentUser = async () => {
-    return {}
     try {
         const currentAccount = await account.get()
         if(!currentAccount) throw Error
