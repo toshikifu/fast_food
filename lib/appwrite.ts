@@ -1,4 +1,4 @@
-import {Account, Avatars, Client, Databases, ID, Query} from "react-native-appwrite";
+import {Account, Avatars, Client, Databases, ID, Query, Storage} from "react-native-appwrite";
 import {CreateUserParams, SignInParams} from "@/type";
 
 export const appwriteConfig = {
@@ -6,7 +6,13 @@ export const appwriteConfig = {
     platform: "com.toshikifu.fastfood",
     projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID,
     databaseId: "68c35952003706777f9e",
-    userCollectionId: "user"
+    bucketId: "68c54357003ce044fbbe",
+    userCollectionId: "user",
+    categoriesCollectionId: "categories",
+    menuCollectionId: "menu",
+    customizationsCollectionId: "customizations",
+    menuCustomizationsCollectionId: "menu_customizations",
+    devKey: process.env.EXPO_PUBLIC_APPWRITE_DEV_KEY,
 }
 
 export const client = new Client()
@@ -15,9 +21,11 @@ client
     .setEndpoint(appwriteConfig.endpoint!)
     .setProject(appwriteConfig.projectId!)
     .setPlatform(appwriteConfig.platform!)
+    .setDevKey(appwriteConfig.devKey!)
 
 export const account = new Account(client)
 export const databases = new Databases(client)
+export const storage = new Storage(client)
 const avatars = new Avatars(client)
 
 export const createUser = async ({email, password, name}: CreateUserParams) => {
@@ -46,13 +54,13 @@ export const createUser = async ({email, password, name}: CreateUserParams) => {
 export const signIn = async ({email, password}: SignInParams) => {
     try {
         const session = await account.createEmailPasswordSession({email, password})
+        console.log(session)
     } catch (e) {
         throw new Error(`Error creating user: ${e}`)
     }
 }
 
 export const getCurrentUser = async () => {
-    return false
     try {
         const currentAccount = await account.get()
         if(!currentAccount) throw Error
